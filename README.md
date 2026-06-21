@@ -54,7 +54,7 @@ The dataset is publicly available on Zenodo:
 ## Installation
 
 ```bash
-git clone https://github.com/kartikec/grapevine-downy-mildew-severity.git
+git clone https://github.com/kartikenc/grapevine-downy-mildew-severity.git
 cd grapevine-downy-mildew-severity
 pip install -r requirements.txt
 ```
