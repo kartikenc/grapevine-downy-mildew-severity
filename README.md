@@ -119,8 +119,8 @@ python src/baseline/efficientnet_baseline.py --data_dir /path/to/data
 If you use this code or dataset, please cite:
 
 ```bibtex
-@article{cholachgudda2026twostage,
-  title={A two-stage deep learning and machine learning pipeline for automated severity estimation of grapevine downy mildew under field conditions},
+@article{cholachgudda2026automated,
+  title={Automated severity grading of grapevine downy mildew in the field: a hybrid segmentation and feature-based machine learning approach},
   author={Cholachgudda, Kartik E. and Biradar, Rajashekhar C. and Kiran, B.M. and Prasannakumar, M.K.},
   journal={Journal of Agriculture and Food Research},
   year={2026},
@@ -144,7 +144,7 @@ The dataset is licensed under [CC BY 4.0](https://creativecommons.org/licenses/b
 
 ## Authors
 
-- **Kartik E. Cholachgudda** — REVA University, Bangalore
-- **Rajashekhar C. Biradar** — REVA University, Bangalore
-- **Kiran B.M.** — University of Agricultural Sciences, GKVK, Bangalore
-- **M.K. Prasannakumar** — University of Agricultural Sciences, GKVK, Bangalore
+- **Kartik E. Cholachgudda** — RECA Labs, REVA University, Bangalore
+- **Rajashekhar C. Biradar** — RECA Labs, REVA University, Bangalore
+- **Kiran B.M.** — AgriHawk Technologies (Fyllo), Bengaluru
+- **M.K. Prasannakumar** — PathoGenOmics Lab, UAS GKVK, Bangalore
