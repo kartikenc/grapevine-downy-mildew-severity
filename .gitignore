@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model weights (use GitHub Releases)
+*.pt
+*.pth
+*.h5
+*.onnx
+*.tflite
+
+# Dataset (hosted on Zenodo)
+data/
+*.npy
+*.npz
+
+# Results and outputs
+results/
+outputs/
+logs/
+wandb/
+
+# Images (keep only README images)
+*.jpg
+*.jpeg
+*.png
+*.tiff
+*.tif
+!docs/*.png
+!docs/*.jpg
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,120 @@
+# Pipeline configuration
+# All hyperparameters used in the Paper 3 experiments
+
+# ─── Data ───
+data:
+  image_size: 1024          # Original preprocessed size
+  model_input_size: 512     # U-Net input size
+  num_classes: 5            # S0, S1, S2, S3, S4
+  random_seed: 42
+  train_ratio: 0.80
+  val_ratio: 0.10
+  test_ratio: 0.10
+
+# ─── Stage 1: U-Net Segmentation ───
+segmentation:
+  architecture: UNet
+  encoder: resnet34
+  encoder_pretrained: imagenet
+  total_params: 24_439_617
+  
+  training:
+    epochs: 50
+    batch_size: 8
+    optimizer: adam
+    learning_rate: 0.0001
+    lr_scheduler: ReduceLROnPlateau
+    lr_patience: 5
+    early_stopping_patience: 10
+    early_stopping_monitor: val_dice
+    loss: dice_bce_combined       # 1:1 weighting
+    dice_smooth: 1.0e-7
+    threshold: 0.5                # Sigmoid binarization
+  
+  augmentation:
+    horizontal_flip: {p: 0.5}
+    vertical_flip: {p: 0.5}
+    rotation: {limit: 30, p: 0.5}
+    scale: {min: 0.8, max: 1.2, p: 0.5}
+    brightness: {limit: 0.2, p: 0.3}
+    contrast: {limit: 0.2, p: 0.3}
+    elastic: {alpha: 120, sigma: 12, p: 0.3}
+    gaussian_noise: {var_limit: 10, p: 0.2}
+
+# ─── Stage 2: Feature Extraction ───
+features:
+  total_features: 75
+  
+  hsv_histograms:
+    bins: 10
+    channels: [H, S, V]          # 30 features
+  
+  hsv_statistics:
+    metrics: [mean, std, median, skewness, kurtosis, range]
+    channels: [H, S, V]          # 18 features
+  
+  color_ratios:                   # 6 features
+    healthy:   {H: [25, 85], S_min: 30, V_min: 30}
+    diseased:  {H: [[0, 25], [150, 180]], S_min: 20, V_min: 30}
+    necrotic:  {S_max: 40, V: [25, 120]}
+  
+  lab_color:
+    channels: [L, a, b]
+    metrics: [mean, std]          # 6 features
+  
+  glcm_texture:                   # 12 features (6 props × mean/std)
+    distances: [1, 3]
+    angles: [0, 45, 90, 135]      # degrees
+    levels: 256
+    symmetric: true
+    normed: true
+    properties: [contrast, dissimilarity, homogeneity, energy, correlation, ASM]
+  
+  leaf_morphology:                # 3 features
+    metrics: [area_ratio, compactness, solidity]
+
+# ─── Stage 2: Classification ───
+classification:
+  selected_model: RandomForest
+  cross_validation:
+    folds: 5
+    stratified: true
+    random_state: 42
+  
+  models:
+    RandomForest:
+      n_estimators: 300
+      max_depth: 15
+      random_state: 42
+    
+    GradientBoosting:
+      n_estimators: 200
+      learning_rate: 0.1
+      max_depth: 5
+      random_state: 42
+    
+    SVM_RBF:
+      C: 10
+      kernel: rbf
+      gamma: scale
+      standardize: true
+    
+    SVM_Linear:
+      C: 1
+      kernel: linear
+      standardize: true
+
+# ─── CNN Baseline ───
+baseline:
+  model: EfficientNet-B0
+  pretrained: imagenet
+  epochs: 30
+  batch_size: 16
+  optimizer: adam
+  learning_rate: 0.0001
+
+# ─── Hardware ───
+hardware:
+  gpu: NVIDIA RTX A4000
+  vram: 16GB
+  cuda: "12.1"
